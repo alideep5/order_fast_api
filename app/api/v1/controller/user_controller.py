@@ -5,21 +5,21 @@ from schema.create_user_request import CreateUserRequest
 from schema.create_user_response import CreateUserResponse
 
 
-class UserRouter(APIRouter):
+class UserController(APIRouter):
     def __init__(self, prefix: str = "/account"):
         super().__init__(prefix=prefix)
+        self.tags = ["Account"]
         self.description = "Operations related to user accounts"
         self.user_service = UserService()
         self.add_api_route(
             path="/create-account",
             methods=["POST"],
             endpoint=self.create_account,
-            tags=["account"],
             summary="User Login",
             description="Authenticate a user and return a token",
         )
 
-    def create_account(self, body: CreateUserRequest) -> CreateUserResponse:
+    async def create_account(self, body: CreateUserRequest) -> CreateUserResponse:
         user_detail: UserDetail = self.user_service.create_account(
             user_name=body.user_name, password=body.password
         )
