@@ -1,10 +1,11 @@
 from typing import List
 from domain.model.todo_detail import TodoDetail
+from persistence.db_session_manager import DbSessionManager
 
 
 class TodoRepository:
     def __init__(self):
-        self.db = "db"
+        self.db_session = DbSessionManager()
 
     def get_all_tasks(self) -> List[TodoDetail]:
         return [

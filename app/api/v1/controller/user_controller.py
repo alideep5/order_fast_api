@@ -20,7 +20,7 @@ class UserController(APIRouter):
         )
 
     async def create_account(self, body: CreateAccountRequest) -> CreateAccountResponse:
-        user_detail: UserDetail = self.user_service.create_account(
+        user_detail: UserDetail = await self.user_service.create_account(
             user_name=body.user_name, password=body.password
         )
         return CreateAccountResponse(
