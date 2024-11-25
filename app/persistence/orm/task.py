@@ -1,10 +1,15 @@
 import uuid
 from . import Base
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import String, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 
 
 class Task(Base):
     __tablename__ = "tasks"
-    id = Column(String(36), primary_key=True, default=str(uuid.uuid4()))
-    user_id = Column(String(36), ForeignKey("users.id"), nullable=False)
-    task = Column(String(256), nullable=False)
+    id: Mapped[str] = mapped_column(
+        String(36), primary_key=True, default=str(uuid.uuid4())
+    )
+    user_id: Mapped[str] = mapped_column(
+        String(36), ForeignKey("users.id"), nullable=False
+    )
+    task: Mapped[str] = mapped_column(String(256), nullable=False)
