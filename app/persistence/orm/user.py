@@ -1,4 +1,4 @@
-from persistence.orm import Base
+from . import Base
 import uuid
 from sqlalchemy import Column, String
 
