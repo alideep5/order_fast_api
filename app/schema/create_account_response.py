@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
 
-class CreateUserResponse(BaseModel):
+class CreateAccountResponse(BaseModel):
     user_id: str
     user_name: str

@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from domain.model.user_detail import UserDetail
 from domain.service.user_service import UserService
-from schema.create_user_request import CreateUserRequest
-from schema.create_user_response import CreateUserResponse
+from schema.create_account_request import CreateAccountRequest
+from schema.create_account_response import CreateAccountResponse
 
 
 class UserController(APIRouter):
@@ -19,10 +19,10 @@ class UserController(APIRouter):
             description="Authenticate a user and return a token",
         )
 
-    async def create_account(self, body: CreateUserRequest) -> CreateUserResponse:
+    async def create_account(self, body: CreateAccountRequest) -> CreateAccountResponse:
         user_detail: UserDetail = self.user_service.create_account(
             user_name=body.user_name, password=body.password
         )
-        return CreateUserResponse(
+        return CreateAccountResponse(
             user_id=user_detail.user_id, user_name=user_detail.name
         )
