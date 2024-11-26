@@ -17,6 +17,8 @@ alembic = "^1.14.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.13.0"
+black = "^24.10.0"
+pylint = "^3.3.1"
 
 [build-system]
 requires = ["poetry-core"]
