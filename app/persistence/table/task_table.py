@@ -1,7 +1,7 @@
 import uuid
-from . import Base
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
+from .base import Base
 
 
 class TaskTable(Base):
