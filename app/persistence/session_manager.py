@@ -1,13 +1,12 @@
 from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from contextlib import asynccontextmanager
+from app.config.app_config import AppConfig
 
 
 class SessionManager:
-    def __init__(self) -> None:
-        self._DATABASE_URL = (
-            "postgresql+asyncpg://order:orderpassword@localhost:5432/order"
-        )
+    def __init__(self, app_config: AppConfig) -> None:
+        self._DATABASE_URL = app_config.database_url
         self.engine = create_async_engine(
             self._DATABASE_URL,
             echo=True,

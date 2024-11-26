@@ -2,6 +2,7 @@ from dependency_injector import containers, providers
 from app.api.v1.controller.todo_controller import TodoController
 from app.api.v1.controller.user_controller import UserController
 from app.api.v1.v1_router import V1Router
+from app.config.app_config import AppConfig
 from app.domain.service.todo_service import TodoService
 from app.domain.service.user_service import UserService
 from app.persistence.repository.todo_repo import TodoRepo
@@ -10,7 +11,9 @@ from app.persistence.session_manager import SessionManager
 
 
 class AppContainer(containers.DeclarativeContainer):
-    session_manager = providers.Singleton(SessionManager)
+    app_config = providers.Singleton(AppConfig)
+
+    session_manager = providers.Singleton(SessionManager, app_config=app_config)
 
     user_repo = providers.Singleton(UserRepo, session_manager=session_manager)
     todo_repo = providers.Singleton(TodoRepo, session_manager=session_manager)
