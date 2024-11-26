@@ -3,6 +3,7 @@ from typing import List
 from app.api.v1.dto.todo_dto import TodoDTO
 from app.domain.entity.todo import Todo
 from app.domain.service.todo_service import TodoService
+from app.utils.dto_util import DTOUtil
 
 
 class TodoController(APIRouter):
@@ -22,5 +23,4 @@ class TodoController(APIRouter):
         )
 
     async def get_todo(self) -> List[TodoDTO]:
-        todo_list: List[Todo] = self.todo_service.get_all_tasks()
-        return [TodoDTO(task_id=todo.task_id, task=todo.task) for todo in todo_list]
+        return DTOUtil.convert_to_dto_list(self.todo_service.get_all_tasks(), TodoDTO)
