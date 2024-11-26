@@ -1,6 +1,8 @@
 from fastapi import FastAPI
-from app.api.v1.v1_router import V1Router
+from app.config.app_config import AppConfig
 from app.config.app_container import AppContainer
+
+app_config = AppConfig()
 
 app = FastAPI(root_path="/api")
 
