@@ -3,6 +3,7 @@ from app.api.v1.dto.create_account_dto import CreateAccountDTO
 from app.api.v1.dto.user_dto import UserDTO
 from app.domain.entity.user import User
 from app.domain.service.user_service import UserService
+from app.utils.dto_util import DTOUtil
 
 
 class UserController(APIRouter):
@@ -22,7 +23,7 @@ class UserController(APIRouter):
         )
 
     async def create_account(self, body: CreateAccountDTO) -> UserDTO:
-        user_detail: User = await self.user_service.create_account(
+        user: User = await self.user_service.create_account(
             user_name=body.user_name, password=body.password
         )
-        return UserDTO(user_id=user_detail.user_id, user_name=user_detail.name)
+        return DTOUtil.convert_to_dto(user, UserDTO)
