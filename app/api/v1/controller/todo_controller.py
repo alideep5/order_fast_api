@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 from typing import List
-from schema.todo_detail import TodoDetail
-from domain.service.todo_service import TodoService
+from app.schema.todo_detail import TodoDetail
+from app.domain.service.todo_service import TodoService
+from app.utils.schema_util import SchemaUtil
 
 
 class TodoRouterController(APIRouter):
@@ -19,4 +20,6 @@ class TodoRouterController(APIRouter):
         )
 
     async def get_todo(self) -> List[TodoDetail]:
-        return self.todo_service.get_all_tasks()
+        return SchemaUtil.convert_list_to_schema(
+            self.todo_service.get_all_tasks(), TodoDetail
+        )

@@ -1,8 +1,8 @@
 from fastapi import APIRouter
-from domain.model.user_detail import UserDetail
-from domain.service.user_service import UserService
-from schema.create_account_request import CreateAccountRequest
-from schema.create_account_response import CreateAccountResponse
+from app.domain.model.user_detail import UserDetail
+from app.domain.service.user_service import UserService
+from app.schema.create_account_request import CreateAccountRequest
+from app.schema.create_account_response import CreateAccountResponse
 
 
 class UserController(APIRouter):

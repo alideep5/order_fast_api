@@ -1,5 +1,5 @@
-from domain.model.user_detail import UserDetail
-from persistence.repository.user_repo import UserRepo
+from app.domain.model.user_detail import UserDetail
+from app.persistence.repository.user_repo import UserRepo
 
 
 class UserService:

@@ -1,6 +1,6 @@
-from domain.model.user_detail import UserDetail
-from persistence.session_manager import SessionManager
-from persistence.orm.user import User
+from app.domain.model.user_detail import UserDetail
+from app.persistence.session_manager import SessionManager
+from app.persistence.orm.user import User
 
 
 class UserRepo:

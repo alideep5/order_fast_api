@@ -1,6 +1,6 @@
 from fastapi import APIRouter
-from api.v1.controller.user_controller import UserController
-from api.v1.controller.todo_controller import TodoRouterController
+from app.api.v1.controller.user_controller import UserController
+from app.api.v1.controller.todo_controller import TodoRouterController
 
 
 class V1Router(APIRouter):

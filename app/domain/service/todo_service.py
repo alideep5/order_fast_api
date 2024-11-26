@@ -1,6 +1,6 @@
 from typing import List
-from domain.model.todo_detail import TodoDetail
-from persistence.repository.todo_repository import TodoRepository
+from app.domain.model.todo_detail import TodoDetail
+from app.persistence.repository.todo_repository import TodoRepository
 
 
 class TodoService:

@@ -1,6 +1,6 @@
 from typing import List
-from domain.model.todo_detail import TodoDetail
-from persistence.session_manager import SessionManager
+from app.domain.model.todo_detail import TodoDetail
+from app.persistence.session_manager import SessionManager
 
 
 class TodoRepository:
