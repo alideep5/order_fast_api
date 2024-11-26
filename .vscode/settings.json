@@ -1,0 +1,4 @@
+{
+    "mypy.dmypyExecutable": "$(poetry env info --path)/bin/dmypy",
+    "mypy.runUsingActiveInterpreter": true
+}
