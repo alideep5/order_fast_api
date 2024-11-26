@@ -1,6 +1,5 @@
 from typing import AsyncIterator
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from contextlib import asynccontextmanager
 
 
@@ -18,7 +17,7 @@ class SessionManager:
             pool_timeout=30,
         )
 
-        self.AsyncSessionLocal = sessionmaker(
+        self.AsyncSessionLocal = async_sessionmaker(
             self.engine, class_=AsyncSession, expire_on_commit=False
         )
 
