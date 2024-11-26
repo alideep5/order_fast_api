@@ -1,4 +1,4 @@
-from app.domain.model.user_detail import UserDetail
+from app.domain.entity.user import User
 from app.persistence.session_manager import SessionManager
 from app.persistence.table.user_table import UserTable
 
@@ -7,7 +7,7 @@ class UserRepo:
     def __init__(self) -> None:
         self.session_manager = SessionManager()
 
-    async def create_user(self, username: str, password: str) -> UserDetail:
+    async def create_user(self, username: str, password: str) -> User:
         user = UserTable(username=username, password=password)
 
         async with self.session_manager.get_session() as session:
@@ -16,4 +16,4 @@ class UserRepo:
             await session.commit()
             await session.refresh(user)
 
-        return UserDetail(user_id=user.id, name=user.username)
+        return User(user_id=user.id, name=user.username)

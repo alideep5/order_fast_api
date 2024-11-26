@@ -2,6 +2,6 @@ from dataclasses import dataclass
 
 
 @dataclass
-class TodoDetail:
+class Todo:
     task_id: str
     task: str

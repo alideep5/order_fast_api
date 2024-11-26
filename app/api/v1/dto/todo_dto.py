@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from app.domain.model.todo_detail import TodoDetail as ServiceTodoDetail
+from app.domain.entity.todo import Todo as ServiceTodoDetail
 
 
 class TodoDTO(BaseModel):
