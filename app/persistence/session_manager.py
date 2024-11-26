@@ -1,9 +1,10 @@
+from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 from contextlib import asynccontextmanager
 
 
-class DbSessionManager:
+class SessionManager:
     def __init__(self):
         self._DATABASE_URL = (
             "postgresql+asyncpg://order:orderpassword@localhost:5432/order"
@@ -22,10 +23,7 @@ class DbSessionManager:
         )
 
     @asynccontextmanager
-    async def get_session(self):
-        """
-        Create a new session and ensure proper cleanup after use.
-        """
+    async def get_session(self) -> AsyncIterator[AsyncSession]:
         async with self.AsyncSessionLocal() as session:
             try:
                 yield session
