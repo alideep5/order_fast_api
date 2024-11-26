@@ -2,5 +2,5 @@
     "python.defaultInterpreterPath": ".venv/bin/python",
     "mypy.dmypyExecutable": "$(poetry env info --path)/bin/dmypy",
     "mypy.runUsingActiveInterpreter": true,
-    "pylint.enabled": true,
+    "pylint.enabled": false,
 }
