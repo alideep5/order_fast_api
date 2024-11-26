@@ -4,7 +4,7 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 
-class Task(Base):
+class TaskTable(Base):
     __tablename__ = "tasks"
     id: Mapped[str] = mapped_column(
         String(36), primary_key=True, default=str(uuid.uuid4())

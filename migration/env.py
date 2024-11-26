@@ -2,9 +2,8 @@ from logging.config import fileConfig
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
-from app.persistence.orm import Base
-from app.persistence.orm.user import User
-from app.persistence.orm.task import Task
+from app.persistence.table import *
+
 
 config = context.config
 

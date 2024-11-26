@@ -1,6 +1,6 @@
 from app.domain.model.user_detail import UserDetail
 from app.persistence.session_manager import SessionManager
-from app.persistence.orm.user import User
+from app.persistence.table.user_table import UserTable
 
 
 class UserRepo:
@@ -8,7 +8,7 @@ class UserRepo:
         self.session_manager = SessionManager()
 
     async def create_user(self, username: str, password: str) -> UserDetail:
-        user = User(username=username, password=password)
+        user = UserTable(username=username, password=password)
 
         async with self.session_manager.get_session() as session:
             session.add(user)
