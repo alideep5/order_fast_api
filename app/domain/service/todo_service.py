@@ -4,7 +4,7 @@ from persistence.repository.todo_repository import TodoRepository
 
 
 class TodoService:
-    def __init__(self):
+    def __init__(self) -> None:
         self.todo_repository = TodoRepository()
 
     def get_all_tasks(self) -> List[TodoDetail]:

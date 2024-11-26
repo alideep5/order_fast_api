@@ -4,7 +4,7 @@ from persistence.session_manager import SessionManager
 
 
 class TodoRepository:
-    def __init__(self):
+    def __init__(self) -> None:
         self.db_session = SessionManager()
 
     def get_all_tasks(self) -> List[TodoDetail]:

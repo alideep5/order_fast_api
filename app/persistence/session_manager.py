@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 
 
 class SessionManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self._DATABASE_URL = (
             "postgresql+asyncpg://order:orderpassword@localhost:5432/order"
         )

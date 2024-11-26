@@ -3,7 +3,7 @@ from persistence.repository.user_repo import UserRepo
 
 
 class UserService:
-    def __init__(self):
+    def __init__(self) -> None:
         self.user_repository = UserRepo()
 
     async def create_account(self, user_name: str, password: str) -> UserDetail:

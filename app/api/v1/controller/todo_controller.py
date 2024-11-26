@@ -1,4 +1,6 @@
 from fastapi import APIRouter
+from typing import List
+from schema.todo_detail import TodoDetail
 from domain.service.todo_service import TodoService
 
 
@@ -16,5 +18,5 @@ class TodoRouterController(APIRouter):
             description="Retrieve list if todo task",
         )
 
-    async def get_todo(self):
+    async def get_todo(self) -> List[TodoDetail]:
         return self.todo_service.get_all_tasks()

@@ -4,7 +4,7 @@ from persistence.orm.user import User
 
 
 class UserRepo:
-    def __init__(self):
+    def __init__(self) -> None:
         self.session_manager = SessionManager()
 
     async def create_user(self, username: str, password: str) -> UserDetail:
