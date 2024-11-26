@@ -4,8 +4,8 @@ from app.persistence.table.user_table import UserTable
 
 
 class UserRepo:
-    def __init__(self) -> None:
-        self.session_manager = SessionManager()
+    def __init__(self, session_manager: SessionManager) -> None:
+        self.session_manager = session_manager
 
     async def create_user(self, username: str, password: str) -> User:
         user = UserTable(username=username, password=password)

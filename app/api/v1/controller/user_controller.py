@@ -6,11 +6,13 @@ from app.domain.service.user_service import UserService
 
 
 class UserController(APIRouter):
-    def __init__(self, prefix: str = "/account"):
+    def __init__(self, user_service: UserService, prefix: str = "/account"):
+        self.user_service = user_service
         super().__init__(prefix=prefix)
+
         self.tags = ["Account"]
         self.description = "Operations related to user accounts"
-        self.user_service = UserService()
+
         self.add_api_route(
             path="/create-account",
             methods=["POST"],

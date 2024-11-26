@@ -1,16 +1,18 @@
 from fastapi import APIRouter
 from typing import List
 from app.api.v1.dto.todo_dto import TodoDTO
+from app.domain.entity.todo import Todo
 from app.domain.service.todo_service import TodoService
-from app.utils.schema_util import SchemaUtil
 
 
-class TodoRouterController(APIRouter):
-    def __init__(self, prefix: str = "/todo"):
+class TodoController(APIRouter):
+    def __init__(self, todo_service: TodoService, prefix: str = "/todo"):
+        self.todo_service = todo_service
         super().__init__(prefix=prefix)
+
         self.tags = ["Todo"]
         self.description = "Operations related to Todo"
-        self.todo_service = TodoService()
+
         self.add_api_route(
             path="/tasks",
             methods=["GET"],
@@ -20,6 +22,5 @@ class TodoRouterController(APIRouter):
         )
 
     async def get_todo(self) -> List[TodoDTO]:
-        return SchemaUtil.convert_list_to_schema(
-            self.todo_service.get_all_tasks(), TodoDTO
-        )
+        todo_list: List[Todo] = self.todo_service.get_all_tasks()
+        return [TodoDTO(task_id=todo.task_id, task=todo.task) for todo in todo_list]
