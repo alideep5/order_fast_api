@@ -7,7 +7,7 @@ from .base import Base
 class UserTable(Base):
     __tablename__ = "users"
     id: Mapped[str] = mapped_column(
-        String(36), primary_key=True, default=str(uuid.uuid4())
+        String(36), primary_key=True, default=lambda: str(uuid.uuid4())
     )
     username: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String(128), nullable=False)
