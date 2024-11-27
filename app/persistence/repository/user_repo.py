@@ -1,19 +1,19 @@
 from app.domain.entity.user import User
-from app.persistence.session_manager import SessionManager
+from app.domain.unit_of_work.transaction import ITransaction
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.persistence.table.user_table import UserTable
+from typing import cast
+from app.persistence.unit_of_work.transaction import Transaction
 
 
 class UserRepo:
-    def __init__(self, session_manager: SessionManager) -> None:
-        self.session_manager = session_manager
+    async def create_user(
+        self, transaction: ITransaction, username: str, password: str
+    ) -> User:
+        session: AsyncSession = cast(Transaction, transaction).get_session()
 
-    async def create_user(self, username: str, password: str) -> User:
         user = UserTable(username=username, password=password)
-
-        async with self.session_manager.get_session() as session:
-            session.add(user)
-            # await session.flush()
-            await session.commit()
-            await session.refresh(user)
-
+        session.add(user)
+        await session.flush()
+        await session.refresh(user)
         return User(user_id=user.id, name=user.username)

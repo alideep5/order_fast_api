@@ -2,9 +2,11 @@ from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from contextlib import asynccontextmanager
 from app.config.app_config import AppConfig
+from app.domain.unit_of_work.unit_of_work import IUnitOfWork
+from app.persistence.unit_of_work.transaction import Transaction
 
 
-class SessionManager:
+class UnitOfWork(IUnitOfWork):
     def __init__(self, app_config: AppConfig) -> None:
         self._DATABASE_URL = app_config.database_url
         self.engine = create_async_engine(
@@ -21,10 +23,10 @@ class SessionManager:
         )
 
     @asynccontextmanager
-    async def get_session(self) -> AsyncIterator[AsyncSession]:
+    async def get_transaction(self) -> AsyncIterator[Transaction]:
         async with self.AsyncSessionLocal() as session:
             try:
-                yield session
+                yield Transaction(session)
             except Exception:
                 await session.rollback()
                 raise
