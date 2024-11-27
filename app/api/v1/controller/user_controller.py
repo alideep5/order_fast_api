@@ -1,9 +1,9 @@
 from fastapi import APIRouter
-from app.api.v1.dto.create_account_dto import CreateAccountDTO
-from app.api.v1.dto.user_dto import UserDTO
+from app.api.dto.create_account_dto import CreateAccountDTO
+from app.api.dto.user_dto import UserDTO
+from app.api.utils.dto_util import DTOUtil
 from app.domain.entity.user import User
 from app.domain.service.user_service import UserService
-from app.utils.dto_util import DTOUtil
 
 
 class UserController(APIRouter):
