@@ -1,7 +1,7 @@
-from typing import AsyncContextManager, Protocol
+from typing import Any, AsyncContextManager, Protocol
 from app.domain.unit_of_work.transaction import ITransaction
 
 
 class IUnitOfWork(Protocol):
-    def get_transaction(self) -> AsyncContextManager[ITransaction]:
+    def get_transaction(self) -> AsyncContextManager[ITransaction[Any]]:
         pass
