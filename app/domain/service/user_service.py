@@ -1,7 +1,7 @@
+from typing import List
 import bcrypt
 from app.domain.entity.login_user import LoginUser
 from app.domain.entity.user import User
-from app.domain.entity.user_list import UserList
 from app.domain.error.response_exception import BadRequestException
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
 from app.domain.util.jwt_util import JWTUtil
@@ -50,7 +50,7 @@ class UserService:
                 token=token,
             )
 
-    async def get_users(self) -> UserList:
+    async def get_users(self) -> List[User]:
         async with self.transaction_manager.get_transaction() as transaction:
             users = await self.user_repo.get_all_users(transaction)
-            return UserList(users=users)
+            return users

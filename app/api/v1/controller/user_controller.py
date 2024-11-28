@@ -3,6 +3,7 @@ from app.api.dto.create_account_dto import CreateAccountDTO
 from app.api.dto.login_dto import LoginDTO
 from app.api.dto.login_user_dto import LoginUserDTO
 from app.api.dto.user_dto import UserDTO
+from app.api.dto.user_list_dto import UserListDTO
 from app.api.utils.dto_util import DTOUtil
 from app.domain.entity.login_user import LoginUser
 from app.domain.entity.user import User
@@ -33,6 +34,14 @@ class UserController(APIRouter):
             description="Authenticate a user and return a token",
         )
 
+        self.add_api_route(
+            path="/users",
+            methods=["GET"],
+            endpoint=self.get_users,
+            summary="Get Users",
+            description="Get all users",
+        )
+
     async def create_account(self, body: CreateAccountDTO) -> UserDTO:
         user: User = await self.user_service.create_account(
             username=body.username, password=body.password
@@ -44,3 +53,7 @@ class UserController(APIRouter):
             username=body.username, password=body.password
         )
         return DTOUtil.convert_to_dto(user, LoginUserDTO)
+
+    async def get_users(self) -> UserListDTO:
+        users = await self.user_service.get_users()
+        return UserListDTO(users=DTOUtil.convert_to_dto_list(users, UserDTO))
