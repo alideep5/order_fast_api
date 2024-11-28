@@ -1,10 +1,10 @@
 from app.domain.entity.user import User
-from app.domain.unit_of_work.unit_of_work import IUnitOfWork
+from app.domain.unit_of_work.transaction_manager import ITransactionManager
 from app.persistence.repository.user_repo import UserRepo
 
 
 class UserService:
-    def __init__(self, unit_of_work: IUnitOfWork, user_repo: UserRepo) -> None:
+    def __init__(self, unit_of_work: ITransactionManager, user_repo: UserRepo) -> None:
         self.unit_of_work = unit_of_work
         self.user_repo = user_repo
 

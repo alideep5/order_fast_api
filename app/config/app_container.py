@@ -7,13 +7,13 @@ from app.domain.service.todo_service import TodoService
 from app.domain.service.user_service import UserService
 from app.persistence.repository.todo_repo import TodoRepo
 from app.persistence.repository.user_repo import UserRepo
-from app.persistence.unit_of_work.unit_of_work import UnitOfWork
+from app.persistence.unit_of_work.transaction_manager import TransactionManager
 
 
 class AppContainer(containers.DeclarativeContainer):
     app_config = providers.Singleton(AppConfig)
 
-    unit_of_work = providers.Singleton(UnitOfWork, app_config=app_config)
+    unit_of_work = providers.Singleton(TransactionManager, app_config=app_config)
 
     user_repo = providers.Singleton(UserRepo)
     todo_repo = providers.Singleton(TodoRepo)

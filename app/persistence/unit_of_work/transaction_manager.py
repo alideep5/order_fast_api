@@ -2,11 +2,11 @@ from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from contextlib import asynccontextmanager
 from app.config.app_config import AppConfig
-from app.domain.unit_of_work.unit_of_work import IUnitOfWork
+from app.domain.unit_of_work.transaction_manager import ITransactionManager
 from app.persistence.unit_of_work.transaction import Transaction
 
 
-class UnitOfWork(IUnitOfWork):
+class TransactionManager(ITransactionManager):
     def __init__(self, app_config: AppConfig) -> None:
         self._DATABASE_URL = app_config.database_url
         self.engine = create_async_engine(
