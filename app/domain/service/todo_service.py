@@ -5,8 +5,10 @@ from app.persistence.repository.todo_repo import TodoRepo
 
 
 class TodoService:
-    def __init__(self, unit_of_work: ITransactionManager, todo_repo: TodoRepo) -> None:
-        self.unit_of_work = unit_of_work
+    def __init__(
+        self, transaction_manager: ITransactionManager, todo_repo: TodoRepo
+    ) -> None:
+        self.transaction_manager = transaction_manager
         self.todo_repo = todo_repo
 
     def get_all_tasks(self) -> List[Todo]:

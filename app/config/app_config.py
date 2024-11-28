@@ -3,6 +3,8 @@ from pydantic_settings import BaseSettings
 
 class AppConfig(BaseSettings):
     database_url: str
+    jwt_secret_key: str
+    jwt_expiration_time: float
 
     class Config:
         env_file = ".env"
