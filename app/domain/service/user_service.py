@@ -2,9 +2,9 @@ from typing import List
 import bcrypt
 from app.domain.entity.login_user import LoginUser
 from app.domain.entity.user import User
-from app.domain.error.response_exception import BadRequestException
+from app.core.error.response_exception import BadRequestException
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
-from app.domain.util.jwt_util import JWTUtil
+from app.core.utils.jwt_util import JWTUtil
 from app.persistence.repository.user_repo import UserRepo
 
 

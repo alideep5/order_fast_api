@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from typing import List
 from app.api.dto.todo_dto import TodoDTO
-from app.api.utils.dto_util import DTOUtil
+from app.core.utils.dto_util import DTOUtil
 from app.domain.entity.todo import Todo
 from app.domain.service.todo_service import TodoService
 

@@ -3,12 +3,12 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette.types import ASGIApp
-from app.api.dto.error_response import ErrorResponse
-from app.domain.error.response_exception import (
+from app.core.model.error_response import ErrorResponse
+from app.core.error.response_exception import (
     BaseResponseException,
     UnauthorizedException,
 )
-from app.domain.util.jwt_util import JWTUtil
+from app.core.utils.jwt_util import JWTUtil
 from typing import Callable, Awaitable, Optional, Sequence
 
 
@@ -51,6 +51,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
             user_id: Optional[str] = self.jwt_util.get_user_id(token=token)
             if not user_id:
                 raise UnauthorizedException(message="Invalid Authorization token")
+
             request.state.user = user_id
 
             response: Response = await call_next(request)

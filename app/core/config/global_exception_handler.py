@@ -1,8 +1,8 @@
 from fastapi import Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
-from app.api.dto.error_response import ErrorResponse
-from app.domain.error.response_exception import BaseResponseException
+from app.core.model.error_response import ErrorResponse
+from app.core.error.response_exception import BaseResponseException
 
 
 class GlobalExceptionHandler:
