@@ -4,7 +4,7 @@ from app.api.dto.login_dto import LoginDTO
 from app.api.dto.login_user_dto import LoginUserDTO
 from app.common.model.user_info import UserInfo
 from app.api.dto.user_list_dto import UserListDTO
-from app.common.utils.dto_util import DTOUtil
+from app.common.util.dto_util import DTOUtil
 from app.domain.entity.login_user import LoginUser
 from app.domain.entity.user import User
 from app.domain.service.user_service import UserService

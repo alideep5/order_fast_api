@@ -9,7 +9,7 @@ from app.common.error.response_exception import (
     UnauthorizedException,
 )
 from app.common.model.user_info import UserInfo
-from app.common.utils.jwt_util import JWTUtil
+from app.common.util.jwt_util import JWTUtil
 from typing import Callable, Awaitable, Optional, Sequence
 
 
