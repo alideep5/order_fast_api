@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from app.core.middleware.jwt_middleware import JWTMiddleware
-from app.core.config.app_container import AppContainer
+from app.app_container import AppContainer
 from app.core.config.global_exception_handler import GlobalExceptionHandler
 from app.core.config.swagger_config import SwaggerConfig
 
