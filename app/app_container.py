@@ -19,13 +19,15 @@ class AppContainer(containers.DeclarativeContainer):
 
     app_logger = providers.Singleton(AppLogger)
 
-    jwt_util = providers.Singleton(JWTUtil, app_config=app_config)
+    jwt_util = providers.Singleton(JWTUtil, app_config=app_config, log=app_logger)
 
     jwt_middleware = providers.Singleton(JWTMiddleware, jwt_util=jwt_util)
 
     exception_handler = providers.Singleton(GlobalExceptionHandler, log=app_logger)
 
-    unit_of_work = providers.Singleton(TransactionManager, app_config=app_config)
+    unit_of_work = providers.Singleton(
+        TransactionManager, app_config=app_config, log=app_logger
+    )
 
     user_repo = providers.Singleton(UserRepo)
     todo_repo = providers.Singleton(TodoRepo)

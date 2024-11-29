@@ -4,12 +4,14 @@ import jwt
 from datetime import datetime, timezone, timedelta
 from app.common.model.app_config import AppConfig
 from app.common.model.user_info import UserInfo
+from app.configuration.app_logger import AppLogger
 
 
 class JWTUtil:
-    def __init__(self, app_config: AppConfig) -> None:
+    def __init__(self, app_config: AppConfig, log: AppLogger) -> None:
         self.jwt_secret = app_config.jwt_secret_key
         self.jwt_expiration_time = app_config.jwt_expiration_time
+        self.log = log
 
     def generate_token(self, user: UserInfo) -> str:
         now = datetime.now(timezone.utc)
@@ -26,7 +28,9 @@ class JWTUtil:
             decoded = jwt.decode(token, self.jwt_secret, algorithms=["HS256"])
             user_data = json.loads(decoded.get("sub"))
             return UserInfo(**user_data)
-        except Exception:
+        except Exception as ex:
+            self.log.error(f"Error while decoding token: {ex}")
+
             return None
 
     def validate_token(self, token: str) -> bool:
@@ -38,5 +42,6 @@ class JWTUtil:
                 options={"verify_exp": True},
             )
             return True
-        except Exception:
+        except Exception as ex:
+            self.log.error(f"Error while validate token: {ex}")
             return False
