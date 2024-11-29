@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from app.api.dto.error_response import ErrorResponse
+from app.api.middleware.jwt_middleware import JWTMiddleware
 from app.config.app_container import AppContainer
 from app.domain.error.response_exception import BaseResponseException
 from fastapi.responses import JSONResponse
@@ -51,5 +52,16 @@ async def handle_unexpected_exception(request: Request, exc: Exception) -> JSONR
         content=ErrorResponse(error="Internal Server Error").model_dump(),
     )
 
+
+app.add_middleware(
+    JWTMiddleware,
+    jwt_util=app_container.jwt_util(),
+    exempt_routes=[
+        "/docs",
+        "/api/openapi.json",
+        "/api/v1/account/login",
+        "/api/v1/account/create-account",
+    ],
+)
 
 app.include_router(app_container.v1_router())

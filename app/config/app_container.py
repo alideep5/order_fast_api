@@ -1,4 +1,5 @@
 from dependency_injector import containers, providers
+from app.api.middleware.jwt_middleware import JWTMiddleware
 from app.api.v1.controller.todo_controller import TodoController
 from app.api.v1.controller.user_controller import UserController
 from app.api.v1.v1_router import V1Router
@@ -17,6 +18,8 @@ class AppContainer(containers.DeclarativeContainer):
     unit_of_work = providers.Singleton(TransactionManager, app_config=app_config)
 
     jwt_util = providers.Singleton(JWTUtil, app_config=app_config)
+
+    jwt_middleware = providers.Singleton(JWTMiddleware, jwt_util=jwt_util)
 
     user_repo = providers.Singleton(UserRepo)
     todo_repo = providers.Singleton(TodoRepo)
