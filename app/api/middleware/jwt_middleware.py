@@ -34,9 +34,16 @@ class JWTMiddleware(BaseHTTPMiddleware):
             ):
                 return await call_next(request)
 
-            token: Optional[str] = request.headers.get("Authorization")
-            if not token:
+            auth_header: Optional[str] = request.headers.get("Authorization")
+            if not auth_header:
                 raise UnauthorizedException(message="Missing Authorization token")
+
+            if not auth_header.startswith("Bearer "):
+                raise UnauthorizedException(
+                    message="Invalid Authorization header format"
+                )
+
+            token: str = auth_header[7:].strip()
 
             if not self.jwt_util.validate_token(token=token):
                 raise UnauthorizedException(message="Invalid Authorization token")

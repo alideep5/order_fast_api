@@ -3,6 +3,7 @@ from fastapi.exceptions import RequestValidationError
 from app.api.dto.error_response import ErrorResponse
 from app.api.middleware.jwt_middleware import JWTMiddleware
 from app.config.app_container import AppContainer
+from app.config.swagger_config import SwaggerConfig
 from app.domain.error.response_exception import BaseResponseException
 from fastapi.responses import JSONResponse
 
@@ -69,5 +70,8 @@ app.add_middleware(
         "/api/v1/account/create-account",
     ],
 )
+
+swagger_config = SwaggerConfig(app)
+swagger_config.add_security_scheme()
 
 app.include_router(app_container.v1_router())
