@@ -11,6 +11,7 @@ from app.common.error.response_exception import (
 from app.common.model.user_info import UserInfo
 from app.common.util.jwt_util import JWTUtil
 from typing import Callable, Awaitable, Optional, Sequence
+from app.configuration.app_logger import AppLogger
 
 
 class JWTMiddleware(BaseHTTPMiddleware):
@@ -18,10 +19,12 @@ class JWTMiddleware(BaseHTTPMiddleware):
         self,
         app: ASGIApp,
         jwt_util: JWTUtil,
+        log: AppLogger,
         exempt_routes: Optional[Sequence[str]] = None,
     ) -> None:
         super().__init__(app)
         self.jwt_util = jwt_util
+        self.log = log
         self.exempt_routes = exempt_routes or []
 
     async def dispatch(
@@ -59,7 +62,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
             return response
 
         except BaseResponseException as baseResponseException:
-            print(
+            self.log.error(
                 f"{baseResponseException.status_code} Error occurred while processing request '{request.url}': {baseResponseException.message}"
             )
 
@@ -69,7 +72,7 @@ class JWTMiddleware(BaseHTTPMiddleware):
             )
 
         except Exception as exception:
-            print(
+            self.log.error(
                 f"Unexpected error occurred while processing request '{request.url} {exception}'"
             )
 

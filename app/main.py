@@ -8,15 +8,15 @@ from app.configuration.swagger_config import SwaggerConfig
 app_container = AppContainer()
 
 app = FastAPI(root_path="/api")
-
-app.add_exception_handler(Exception, GlobalExceptionHandler.handle_exception)
+app.add_exception_handler(Exception, app_container.exception_handler().handle_exception)
 app.add_exception_handler(
-    RequestValidationError, GlobalExceptionHandler.handle_exception
+    RequestValidationError, app_container.exception_handler().handle_exception
 )
 
 app.add_middleware(
     JWTMiddleware,
     jwt_util=app_container.jwt_util(),
+    log=app_container.app_logger(),
     exempt_routes=[
         "/docs",
         "/api/openapi.json",
