@@ -1,7 +1,7 @@
 from typing import List
 from pydantic import BaseModel
-from app.api.dto.user_dto import UserDTO
+from app.common.model.user_info import UserInfo
 
 
 class UserListDTO(BaseModel):
-    users: List[UserDTO]
+    users: List[UserInfo]

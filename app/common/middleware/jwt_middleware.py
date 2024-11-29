@@ -8,6 +8,7 @@ from app.common.error.response_exception import (
     BaseResponseException,
     UnauthorizedException,
 )
+from app.common.model.user_info import UserInfo
 from app.common.utils.jwt_util import JWTUtil
 from typing import Callable, Awaitable, Optional, Sequence
 
@@ -48,11 +49,11 @@ class JWTMiddleware(BaseHTTPMiddleware):
             if not self.jwt_util.validate_token(token=token):
                 raise UnauthorizedException(message="Invalid Authorization token")
 
-            user_id: Optional[str] = self.jwt_util.get_user_id(token=token)
-            if not user_id:
+            user: Optional[UserInfo] = self.jwt_util.get_user(token=token)
+            if not user:
                 raise UnauthorizedException(message="Invalid Authorization token")
 
-            request.state.user = user_id
+            request.state.user = user
 
             response: Response = await call_next(request)
             return response

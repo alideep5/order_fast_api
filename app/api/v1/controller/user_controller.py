@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from app.api.dto.create_account_dto import CreateAccountDTO
 from app.api.dto.login_dto import LoginDTO
 from app.api.dto.login_user_dto import LoginUserDTO
-from app.api.dto.user_dto import UserDTO
+from app.common.model.user_info import UserInfo
 from app.api.dto.user_list_dto import UserListDTO
 from app.common.utils.dto_util import DTOUtil
 from app.domain.entity.login_user import LoginUser
@@ -42,11 +42,11 @@ class UserController(APIRouter):
             description="Get all users",
         )
 
-    async def create_account(self, body: CreateAccountDTO) -> UserDTO:
+    async def create_account(self, body: CreateAccountDTO) -> UserInfo:
         user: User = await self.user_service.create_account(
             username=body.username, password=body.password
         )
-        return DTOUtil.convert_to_dto(user, UserDTO)
+        return DTOUtil.convert_to_dto(user, UserInfo)
 
     async def login(self, body: LoginDTO) -> LoginUserDTO:
         user: LoginUser = await self.user_service.login(
@@ -56,4 +56,4 @@ class UserController(APIRouter):
 
     async def get_users(self) -> UserListDTO:
         users = await self.user_service.get_users()
-        return UserListDTO(users=DTOUtil.convert_to_dto_list(users, UserDTO))
+        return UserListDTO(users=DTOUtil.convert_to_dto_list(users, UserInfo))

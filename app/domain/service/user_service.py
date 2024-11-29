@@ -1,5 +1,6 @@
 from typing import List
 import bcrypt
+from app.common.model.user_info import UserInfo
 from app.domain.entity.login_user import LoginUser
 from app.domain.entity.user import User
 from app.common.error.response_exception import BadRequestException
@@ -43,7 +44,9 @@ class UserService:
             ):
                 raise BadRequestException("Invalid username or password")
 
-            token = self.jwt_util.generate_token(user_detail.id)
+            token = self.jwt_util.generate_token(
+                UserInfo(id=user_detail.id, username=user_detail.username)
+            )
             return LoginUser(
                 id=user_detail.id,
                 username=user_detail.username,
