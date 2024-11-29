@@ -1,9 +1,11 @@
+from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette.types import ASGIApp
+from app.api.dto.error_response import ErrorResponse
 from app.domain.error.response_exception import (
-    ForbiddenException,
+    BaseResponseException,
     UnauthorizedException,
 )
 from app.domain.util.jwt_util import JWTUtil
@@ -24,20 +26,45 @@ class JWTMiddleware(BaseHTTPMiddleware):
     async def dispatch(
         self, request: Request, call_next: Callable[[Request], Awaitable[Response]]
     ) -> Response:
-        path: str = request.url.path
-
-        if any(path.startswith(exempt_route) for exempt_route in self.exempt_routes):
-            return await call_next(request)
-
-        token: Optional[str] = request.headers.get("Authorization")
-        if not token:
-            raise ForbiddenException()
-
         try:
-            user_id: str = self.jwt_util.get_user_id(token=token)
-            request.state.user = user_id
-        except Exception:
-            raise UnauthorizedException()
+            path: str = request.url.path
 
-        response: Response = await call_next(request)
-        return response
+            if any(
+                path.startswith(exempt_route) for exempt_route in self.exempt_routes
+            ):
+                return await call_next(request)
+
+            token: Optional[str] = request.headers.get("Authorization")
+            if not token:
+                raise UnauthorizedException(message="Missing Authorization token")
+
+            if not self.jwt_util.validate_token(token=token):
+                raise UnauthorizedException(message="Invalid Authorization token")
+
+            user_id: Optional[str] = self.jwt_util.get_user_id(token=token)
+            if not user_id:
+                raise UnauthorizedException(message="Invalid Authorization token")
+            request.state.user = user_id
+
+            response: Response = await call_next(request)
+            return response
+
+        except BaseResponseException as baseResponseException:
+            print(
+                f"{baseResponseException.status_code} Error occurred while processing request '{request.url}': {baseResponseException.message}"
+            )
+
+            return JSONResponse(
+                status_code=baseResponseException.status_code,
+                content=ErrorResponse(error=baseResponseException.message).model_dump(),
+            )
+
+        except Exception as exception:
+            print(
+                f"Unexpected error occurred while processing request '{request.url} {exception}'"
+            )
+
+            return JSONResponse(
+                status_code=500,
+                content=ErrorResponse(error="Internal Server Error").model_dump(),
+            )

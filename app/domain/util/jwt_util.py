@@ -1,3 +1,4 @@
+from typing import Optional
 import jwt
 from datetime import datetime, timezone, timedelta
 from app.config.app_config import AppConfig
@@ -18,11 +19,11 @@ class JWTUtil:
         }
         return jwt.encode(payload, self.jwt_secret, algorithm="HS256")
 
-    def get_user_id(self, token: str) -> str:
+    def get_user_id(self, token: str) -> Optional[str]:
         decoded = jwt.decode(token, self.jwt_secret, algorithms=["HS256"])
         user_id = decoded.get("sub")
         if not isinstance(user_id, str):
-            raise ValueError("Token does not contain 'sub' claim")
+            return None
         return user_id
 
     def validate_token(self, token: str) -> bool:
