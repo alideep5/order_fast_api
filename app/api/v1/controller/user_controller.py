@@ -1,10 +1,11 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.api.dto.create_account_dto import CreateAccountDTO
 from app.api.dto.login_dto import LoginDTO
 from app.api.dto.login_user_dto import LoginUserDTO
 from app.common.model.user_info import UserInfo
 from app.api.dto.user_list_dto import UserListDTO
 from app.common.util.dto_util import DTOUtil
+from app.common.util.request_util import RequestUtil
 from app.domain.entity.login_user import LoginUser
 from app.domain.entity.user import User
 from app.domain.service.user_service import UserService
@@ -54,6 +55,8 @@ class UserController(APIRouter):
         )
         return DTOUtil.convert_to_dto(user, LoginUserDTO)
 
-    async def get_users(self) -> UserListDTO:
+    async def get_users(
+        self, user: UserInfo = Depends(RequestUtil.get_auth_user)
+    ) -> UserListDTO:
         users = await self.user_service.get_users()
         return UserListDTO(users=DTOUtil.convert_to_dto_list(users, UserInfo))
