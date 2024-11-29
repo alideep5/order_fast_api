@@ -3,12 +3,12 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.requests import Request
 from starlette.responses import Response
 from starlette.types import ASGIApp
-from app.core.model.error_response import ErrorResponse
-from app.core.error.response_exception import (
+from app.common.model.error_response import ErrorResponse
+from app.common.error.response_exception import (
     BaseResponseException,
     UnauthorizedException,
 )
-from app.core.utils.jwt_util import JWTUtil
+from app.common.utils.jwt_util import JWTUtil
 from typing import Callable, Awaitable, Optional, Sequence
 
 
