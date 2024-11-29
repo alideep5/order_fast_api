@@ -45,7 +45,9 @@ async def validation_exception_handler(
 
 @app.exception_handler(Exception)
 async def handle_unexpected_exception(request: Request, exc: Exception) -> JSONResponse:
-    print(f"Unexpected error occurred while processing request '{request.url}': {exc}")
+    if isinstance(exc, BaseResponseException):
+        return await handle_base_exception(request, exc)
+    print(f"Unexpected error occurred while processing request '{request.url}")
 
     return JSONResponse(
         status_code=500,
