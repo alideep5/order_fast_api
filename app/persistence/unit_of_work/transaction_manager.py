@@ -1,7 +1,7 @@
 from typing import AsyncIterator
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from contextlib import asynccontextmanager
-from app.core.config.app_config import AppConfig
+from app.core.configuration.app_config import AppConfig
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
 from app.persistence.unit_of_work.transaction import Transaction
 

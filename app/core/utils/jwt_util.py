@@ -1,7 +1,7 @@
 from typing import Optional
 import jwt
 from datetime import datetime, timezone, timedelta
-from app.core.config.app_config import AppConfig
+from app.core.configuration.app_config import AppConfig
 
 
 class JWTUtil:
