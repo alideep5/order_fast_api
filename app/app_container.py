@@ -2,8 +2,8 @@ from dependency_injector import containers, providers
 from app.api.v1.controller.todo_controller import TodoController
 from app.api.v1.controller.user_controller import UserController
 from app.api.v1.v1_router import V1Router
-from app.common.configuration.app_config import AppConfig
-from app.common.configuration.jwt_middleware import JWTMiddleware
+from app.common.model.app_config import AppConfig
+from app.configuration.jwt_middleware import JWTMiddleware
 from app.domain.service.todo_service import TodoService
 from app.domain.service.user_service import UserService
 from app.common.util.jwt_util import JWTUtil

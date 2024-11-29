@@ -2,7 +2,7 @@ import json
 from typing import Optional
 import jwt
 from datetime import datetime, timezone, timedelta
-from app.common.configuration.app_config import AppConfig
+from app.common.model.app_config import AppConfig
 from app.common.model.user_info import UserInfo
 
 
