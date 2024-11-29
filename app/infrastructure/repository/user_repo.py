@@ -5,8 +5,8 @@ from sqlalchemy.sql import exists
 from app.domain.entity.user import User
 from app.domain.entity.user_detail import UserDetail
 from app.domain.unit_of_work.transaction import ITransaction
-from app.persistence.table.user_table import UserTable
-from app.persistence.unit_of_work.transaction import Transaction
+from app.infrastructure.table.user_table import UserTable
+from app.infrastructure.unit_of_work.transaction import Transaction
 from typing import Any, cast
 
 

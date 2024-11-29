@@ -2,7 +2,7 @@ from logging.config import fileConfig
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import create_async_engine
 from alembic import context
-from app.persistence.table import *
+from app.infrastructure.table import *
 
 
 config = context.config

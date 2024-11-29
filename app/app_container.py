@@ -7,9 +7,9 @@ from app.common.middleware.jwt_middleware import JWTMiddleware
 from app.domain.service.todo_service import TodoService
 from app.domain.service.user_service import UserService
 from app.common.utils.jwt_util import JWTUtil
-from app.persistence.repository.todo_repo import TodoRepo
-from app.persistence.repository.user_repo import UserRepo
-from app.persistence.unit_of_work.transaction_manager import TransactionManager
+from app.infrastructure.repository.todo_repo import TodoRepo
+from app.infrastructure.repository.user_repo import UserRepo
+from app.infrastructure.unit_of_work.transaction_manager import TransactionManager
 
 
 class AppContainer(containers.DeclarativeContainer):

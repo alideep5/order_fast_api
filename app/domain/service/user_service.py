@@ -5,7 +5,7 @@ from app.domain.entity.user import User
 from app.common.error.response_exception import BadRequestException
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
 from app.common.utils.jwt_util import JWTUtil
-from app.persistence.repository.user_repo import UserRepo
+from app.infrastructure.repository.user_repo import UserRepo
 
 
 class UserService:

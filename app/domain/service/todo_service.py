@@ -1,7 +1,7 @@
 from typing import List
 from app.domain.entity.todo import Todo
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
-from app.persistence.repository.todo_repo import TodoRepo
+from app.infrastructure.repository.todo_repo import TodoRepo
 
 
 class TodoService:

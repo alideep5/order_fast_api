@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from contextlib import asynccontextmanager
 from app.common.configuration.app_config import AppConfig
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
-from app.persistence.unit_of_work.transaction import Transaction
+from app.infrastructure.unit_of_work.transaction import Transaction
 
 
 class TransactionManager(ITransactionManager):
