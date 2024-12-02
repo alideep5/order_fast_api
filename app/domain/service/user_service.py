@@ -4,9 +4,9 @@ from app.common.model.user_info import UserInfo
 from app.domain.entity.login_user import LoginUser
 from app.domain.entity.user import User
 from app.common.error.response_exception import BadRequestException
+from app.domain.repository.user_repo import IUserRepo
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
 from app.common.util.jwt_util import JWTUtil
-from app.infrastructure.repository.user_repo import UserRepo
 
 
 class UserService:
@@ -14,7 +14,7 @@ class UserService:
         self,
         transaction_manager: ITransactionManager,
         jwt_util: JWTUtil,
-        user_repo: UserRepo,
+        user_repo: IUserRepo,
     ) -> None:
         self.transaction_manager = transaction_manager
         self.jwt_util = jwt_util

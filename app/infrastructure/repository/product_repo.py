@@ -1,13 +1,14 @@
 from typing import Any, List, Optional
 from sqlalchemy import delete, select
 from app.domain.entity.product import Product
+from app.domain.repository.product_repo import IProductRepo
 from app.domain.unit_of_work.transaction import ITransaction
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.table.product_table import ProductTable
 from app.infrastructure.table.shop_table import ShopTable
 
 
-class ProductRepo:
+class ProductRepo(IProductRepo):
     async def get_product_shop_owner_id(
         self, transaction: ITransaction[Any], product_id: str
     ) -> Optional[str]:

@@ -1,12 +1,13 @@
 from typing import Any, List, Optional
 from sqlalchemy import delete, select, update
 from app.domain.entity.shop import Shop
+from app.domain.repository.shop_repo import IShopRepo
 from app.domain.unit_of_work.transaction import ITransaction
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.table.shop_table import ShopTable
 
 
-class ShopRepo:
+class ShopRepo(IShopRepo):
     async def create_shop(
         self, transaction: ITransaction[Any], owner_id: str, name: str, address: str
     ) -> Shop:

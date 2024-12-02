@@ -2,18 +2,17 @@ from typing import List, Optional
 from app.common.error.response_exception import BadRequestException, ForbiddenException
 from app.common.model.user_info import UserInfo
 from app.domain.entity.product import Product
+from app.domain.repository.product_repo import IProductRepo
+from app.domain.repository.shop_repo import IShopRepo
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
-from app.infrastructure.repository.product_repo import ProductRepo
-from app.infrastructure.repository.shop_repo import ShopRepo
-from app.infrastructure.repository.user_repo import UserRepo
 
 
 class ProductService:
     def __init__(
         self,
         transaction_manager: ITransactionManager,
-        product_repo: ProductRepo,
-        shop_repo: ShopRepo,
+        product_repo: IProductRepo,
+        shop_repo: IShopRepo,
     ) -> None:
         self.transaction_manager = transaction_manager
         self.product_repo = product_repo

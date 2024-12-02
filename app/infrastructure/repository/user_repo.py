@@ -4,11 +4,12 @@ from sqlalchemy.future import select
 from sqlalchemy.sql import exists
 from app.domain.entity.user import User
 from app.domain.entity.user_detail import UserDetail
+from app.domain.repository.user_repo import IUserRepo
 from app.domain.unit_of_work.transaction import ITransaction
 from app.infrastructure.table.user_table import UserTable
 
 
-class UserRepo:
+class UserRepo(IUserRepo):
     async def create_user(
         self, transaction: ITransaction[Any], username: str, password: str
     ) -> User:
