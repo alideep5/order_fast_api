@@ -1,15 +1,15 @@
 from dependency_injector import containers, providers
-from app.api.v1.controller.todo_controller import TodoController
+from app.api.v1.controller.shop_controller import ShopController
 from app.api.v1.controller.user_controller import UserController
 from app.api.v1.v1_router import V1Router
 from app.common.model.app_config import AppConfig
 from app.configuration.global_exception_handler import GlobalExceptionHandler
 from app.configuration.jwt_middleware import JWTMiddleware
 from app.configuration.app_logger import AppLogger
-from app.domain.service.todo_service import TodoService
+from app.domain.service.shop_service import ShopService
 from app.domain.service.user_service import UserService
 from app.common.util.jwt_util import JWTUtil
-from app.infrastructure.repository.todo_repo import TodoRepo
+from app.infrastructure.repository.shop_repo import ShopRepo
 from app.infrastructure.repository.user_repo import UserRepo
 from app.infrastructure.unit_of_work.transaction_manager import TransactionManager
 
@@ -30,7 +30,7 @@ class AppContainer(containers.DeclarativeContainer):
     )
 
     user_repo = providers.Singleton(UserRepo)
-    todo_repo = providers.Singleton(TodoRepo)
+    shop_repo = providers.Singleton(ShopRepo)
 
     user_service = providers.Singleton(
         UserService,
@@ -38,13 +38,16 @@ class AppContainer(containers.DeclarativeContainer):
         jwt_util=jwt_util,
         user_repo=user_repo,
     )
-    todo_service = providers.Singleton(
-        TodoService, transaction_manager=unit_of_work, todo_repo=todo_repo
+    shop_service = providers.Singleton(
+        ShopService,
+        transaction_manager=unit_of_work,
+        shop_repo=shop_repo,
+        user_repo=user_repo,
     )
 
     user_controller = providers.Singleton(UserController, user_service=user_service)
-    todo_controller = providers.Singleton(TodoController, todo_service=todo_service)
+    shop_controller = providers.Singleton(ShopController, shop_service=shop_service)
 
     v1_router = providers.Singleton(
-        V1Router, user_controller=user_controller, todo_controller=todo_controller
+        V1Router, user_controller=user_controller, shop_controller=shop_controller
     )

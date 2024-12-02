@@ -13,34 +13,33 @@ from app.domain.service.user_service import UserService
 
 class UserController(APIRouter):
     def __init__(self, user_service: UserService, prefix: str = "/account"):
-        self.user_service = user_service
         super().__init__(prefix=prefix)
-
-        self.tags = ["Account"]
-        self.description = "Operations related to user accounts"
+        self.user_service = user_service
 
         self.add_api_route(
             path="/create-account",
             methods=["POST"],
             endpoint=self.create_account,
-            summary="Create User",
-            description="Create a user and return a user details",
+            tags=["Account"],
+            summary="Create User Account",
+            description="Endpoint to create a new user account. Returns user details upon successful creation.",
         )
-
         self.add_api_route(
             path="/login",
             methods=["POST"],
             endpoint=self.login,
+            tags=["Account"],
             summary="User Login",
-            description="Authenticate a user and return a token",
+            description="Endpoint to authenticate a user. Returns a token upon successful authentication.",
         )
-
         self.add_api_route(
             path="/users",
             methods=["GET"],
             endpoint=self.get_users,
-            summary="Get Users",
-            description="Get all users",
+            tags=["User"],
+            summary="Retrieve All Users",
+            description="Endpoint to fetch the list of all registered users.",
+            response_model=UserListDTO,
         )
 
     async def create_account(self, body: CreateAccountDTO) -> UserInfo:

@@ -1,6 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class LoginDTO(BaseModel):
-    username: str
-    password: str
+    username: str = Field(..., description="Username of the user.")
+    password: str = Field(..., description="Password of the user.")
