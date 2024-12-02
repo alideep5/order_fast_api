@@ -3,7 +3,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from app.common.model.error_response import ErrorResponse
 from app.common.error.response_exception import BaseResponseException
-from app.configuration.app_logger import AppLogger
+from app.common.app_logger import AppLogger
 
 
 class GlobalExceptionHandler:

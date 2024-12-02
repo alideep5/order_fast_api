@@ -11,7 +11,7 @@ from app.common.error.response_exception import (
 from app.common.model.user_info import UserInfo
 from app.common.util.jwt_util import JWTUtil
 from typing import Callable, Awaitable, Optional, Sequence
-from app.configuration.app_logger import AppLogger
+from app.common.app_logger import AppLogger
 
 
 class JWTMiddleware(BaseHTTPMiddleware):

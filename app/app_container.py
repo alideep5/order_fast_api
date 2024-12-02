@@ -6,7 +6,7 @@ from app.api.v1.v1_router import V1Router
 from app.common.model.app_config import AppConfig
 from app.configuration.global_exception_handler import GlobalExceptionHandler
 from app.configuration.jwt_middleware import JWTMiddleware
-from app.configuration.app_logger import AppLogger
+from app.common.app_logger import AppLogger
 from app.domain.service.product_service import ProductService
 from app.domain.service.shop_service import ShopService
 from app.domain.service.user_service import UserService

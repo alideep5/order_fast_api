@@ -4,7 +4,7 @@ import jwt
 from datetime import datetime, timezone, timedelta
 from app.common.model.app_config import AppConfig
 from app.common.model.user_info import UserInfo
-from app.configuration.app_logger import AppLogger
+from app.common.app_logger import AppLogger
 
 
 class JWTUtil:
