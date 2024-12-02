@@ -19,6 +19,7 @@ class UserController(APIRouter):
         self.add_api_route(
             path="/create-account",
             methods=["POST"],
+            status_code=201,
             endpoint=self.create_account,
             tags=["Account"],
             summary="Create User Account",

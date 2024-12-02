@@ -27,6 +27,7 @@ class ShopController(APIRouter):
         self.add_api_route(
             path="/",
             methods=["POST"],
+            status_code=201,
             endpoint=self.create_shop,
             summary="Create shop",
             description="Endpoint to create a shop.",
