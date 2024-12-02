@@ -43,7 +43,7 @@ class ProductRepo:
         products = result.scalars().all()
         return [
             Product(
-                id=str(product.id),
+                id=product.id,
                 shop_id=product.shop_id,
                 name=product.name,
                 price=product.price,

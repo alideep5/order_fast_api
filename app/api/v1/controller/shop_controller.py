@@ -109,7 +109,7 @@ class ShopController(APIRouter):
         shop_id: str = Path(..., description="The ID of the shop."),
         user: UserInfo = Depends(RequestUtil.get_auth_user),
     ) -> ShopDTO:
-        shop = await self.shop_service.delete_shop(user_info=user, shop_id=str(shop_id))
+        shop = await self.shop_service.delete_shop(user_info=user, shop_id=shop_id)
         return DTOUtil.convert_to_dto(shop, ShopDTO)
 
     async def change_owner(
@@ -120,7 +120,7 @@ class ShopController(APIRouter):
     ) -> ShopDTO:
         shop = await self.shop_service.change_owner(
             user_info=user,
-            shop_id=str(shop_id),
-            new_owner_id=str(change_shop_owner_request.new_owner_id),
+            shop_id=shop_id,
+            new_owner_id=change_shop_owner_request.new_owner_id,
         )
         return DTOUtil.convert_to_dto(shop, ShopDTO)

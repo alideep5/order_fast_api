@@ -15,10 +15,6 @@ class V1Router(APIRouter):
     ):
         super().__init__(prefix=prefix)
 
-        self.include_router(user_controller)
-        self.include_router(shop_controller)
-        self.include_router(product_controller)
-
         self.responses = {
             "400": {
                 "description": "Bad Request",
@@ -69,3 +65,7 @@ class V1Router(APIRouter):
                 },
             },
         }
+
+        self.include_router(user_controller)
+        self.include_router(shop_controller)
+        self.include_router(product_controller)
