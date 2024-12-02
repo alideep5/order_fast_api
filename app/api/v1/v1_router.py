@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from app.api.v1.controller.product_controller import ProductController
 from app.api.v1.controller.user_controller import UserController
 from app.api.v1.controller.shop_controller import ShopController
 from app.common.model.error_response import ErrorResponse
@@ -9,9 +10,14 @@ class V1Router(APIRouter):
         self,
         user_controller: UserController,
         shop_controller: ShopController,
+        product_controller: ProductController,
         prefix: str = "/v1",
     ):
         super().__init__(prefix=prefix)
+
+        self.include_router(user_controller)
+        self.include_router(shop_controller)
+        self.include_router(product_controller)
 
         self.responses = {
             "400": {
@@ -63,5 +69,3 @@ class V1Router(APIRouter):
                 },
             },
         }
-        self.include_router(user_controller)
-        self.include_router(shop_controller)

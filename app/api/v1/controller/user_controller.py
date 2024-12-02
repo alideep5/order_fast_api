@@ -40,7 +40,6 @@ class UserController(APIRouter):
             tags=["User"],
             summary="Retrieve All Users",
             description="Endpoint to fetch the list of all registered users.",
-            response_model=UserListDTO,
         )
 
     async def create_account(self, body: CreateAccountDTO) -> UserInfo:
