@@ -17,6 +17,8 @@ dependency-injector = "^4.43.0"
 pydantic-settings = "^2.6.1"
 bcrypt = "^4.2.1"
 pyjwt = "^2.10.1"
+pytest-asyncio = "^0.24.0"
+asynctest = "^0.13.0"
 
 
 [tool.poetry.group.dev.dependencies]
