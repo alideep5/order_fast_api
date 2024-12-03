@@ -8,115 +8,58 @@ Below is the high-level folder structure:
 
 ```
 📦
-├─ .gitignore
-├─ .vscode
-│  └─ settings.json
-├─ README.md
-├─ alembic.ini
-├─ app
-│  ├─ __init__.py
-│  ├─ api
-│  │  ├─ __init__.py
-│  │  ├─ dto
-│  │  │  ├─ __init__.py
-│  │  │  ├─ change_shop_owner_request.py
-│  │  │  ├─ create_account_dto.py
-│  │  │  ├─ create_product_dto.py
-│  │  │  ├─ create_shop_request.py
-│  │  │  ├─ login_dto.py
-│  │  │  ├─ login_user_dto.py
-│  │  │  ├─ product_dto.py
-│  │  │  ├─ product_list_dto.py
-│  │  │  ├─ shop_dto.py
-│  │  │  ├─ shop_list_dto.py
-│  │  │  ├─ update_product_dto.py
-│  │  │  ├─ update_shop_request.py
-│  │  │  └─ user_list_dto.py
-│  │  └─ v1
-│  │     ├─ __init__.py
-│  │     ├─ controller
-│  │     │  ├─ __init__.py
-│  │     │  ├─ product_controller.py
-│  │     │  ├─ shop_controller.py
-│  │     │  └─ user_controller.py
-│  │     └─ v1_router.py
-│  ├─ app_container.py
-│  ├─ common
-│  │  ├─ __init__.py
-│  │  ├─ app_logger.py
-│  │  ├─ error
-│  │  │  ├─ __init__.py
-│  │  │  └─ response_exception.py
-│  │  ├─ model
-│  │  │  ├─ __init__.py
-│  │  │  ├─ app_config.py
-│  │  │  ├─ error_response.py
-│  │  │  └─ user_info.py
-│  │  └─ util
-│  │     ├─ __init__.py
-│  │     ├─ dto_util.py
-│  │     ├─ jwt_util.py
-│  │     └─ request_util.py
-│  ├─ configuration
-│  │  ├─ __init__.py
-│  │  ├─ global_exception_handler.py
-│  │  ├─ jwt_middleware.py
-│  │  └─ swagger_config.py
-│  ├─ domain
-│  │  ├─ __init__.py
-│  │  ├─ entity
-│  │  │  ├─ __init__.py
-│  │  │  ├─ login_user.py
-│  │  │  ├─ product.py
-│  │  │  ├─ shop.py
-│  │  │  ├─ user.py
-│  │  │  └─ user_detail.py
-│  │  ├─ repository
-│  │  │  ├─ product_repo.py
-│  │  │  ├─ shop_repo.py
-│  │  │  └─ user_repo.py
-│  │  ├─ service
-│  │  │  ├─ __init__.py
-│  │  │  ├─ product_service.py
-│  │  │  ├─ shop_service.py
-│  │  │  └─ user_service.py
-│  │  └─ unit_of_work
-│  │     ├─ transaction.py
-│  │     └─ transaction_manager.py
-│  ├─ infrastructure
-│  │  ├─ __init__.py
-│  │  ├─ repository
-│  │  │  ├─ __init__.py
-│  │  │  ├─ product_repo.py
-│  │  │  ├─ shop_repo.py
-│  │  │  └─ user_repo.py
-│  │  ├─ table
-│  │  │  ├─ __init__.py
-│  │  │  ├─ base.py
-│  │  │  ├─ order_item_table.py
-│  │  │  ├─ order_table.py
-│  │  │  ├─ product_table.py
-│  │  │  ├─ shop_table.py
-│  │  │  └─ user_table.py
-│  │  └─ unit_of_work
-│  │     ├─ __init__.py
-│  │     ├─ transaction.py
-│  │     └─ transaction_manager.py
-│  └─ main.py
-├─ docker-compose.yml
-├─ migration
-│  ├─ README
-│  ├─ env.py
-│  ├─ script.py.mako
-│  └─ versions
-│     └─ e48a12275147_initial_migration.py
-├─ mypy.ini
-├─ pyproject.toml
-└─ test
-   ├─ __init__.py
-   └─ domain
-      └─ service
-         └─ user_service.py
+├─ app
+│  ├─ api
+│  │  ├─ dto
+│  │  │  └─ example_dto.py
+│  │  ├─ v1
+│  │  │  ├─ controller
+│  │  │  │  └─ example_controller.py
+│  │  │  └─ v1_router.py
+│  ├─ common
+│  │  ├─ error
+│  │  │  └─ response_exception.py
+│  │  └─ app_logger.py
+│  ├─ configuration
+│  │  ├─ global_exception_handler.py
+│  │  └─ swagger_config.py
+│  ├─ domain
+│  │  ├─ entity
+│  │  │  └─ example_entity.py
+│  │  ├─ repository
+│  │  │  └─ example_repo.py
+│  │  ├─ service
+│  │  │  └─ example_service.py
+│  │  └─ unit_of_work
+│  │     ├─ transaction.py
+│  │     └─ transaction_manager.py
+│  ├─ infrastructure
+│  │  ├─ repository
+│  │  │  └─ example_repo.py
+│  │  ├─ table
+│  │  │  └─ example_table.py
+│  │  └─ unit_of_work
+│  │     └─ transaction.py
+│  └─ main.py
+│  └─ app_container.py
+├─ migration
+│  ├─ versions
+│  │  └─ initial_migration.py
+│  ├─ README
+│  ├─ env.py
+│  └─ script.py.mako
+├─ test
+│  ├─ domain
+│  │  ├─ service
+│  │  │  └─ test_example_service.py
+├─ .vscode
+│  └─ settings.json
+├─ .gitignore
+├─ README.md
+├─ alembic.ini
+├─ docker-compose.yml
+├─ mypy.ini
+├─ pyproject.toml
 
 ```
 
