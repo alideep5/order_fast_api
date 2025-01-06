@@ -14,21 +14,19 @@ class UserService:
         self,
         transaction_manager: ITransactionManager,
         jwt_util: JWTUtil,
-        user_repo: IUserRepo,
     ) -> None:
         self.transaction_manager = transaction_manager
         self.jwt_util = jwt_util
-        self.user_repo = user_repo
 
     async def create_account(self, username: str, password: str) -> User:
         async with self.transaction_manager.get_transaction() as transaction:
-            if await self.user_repo.is_username_exists(transaction, username=username):
+            if await transaction.user_repo.is_username_exists(username=username):
                 raise BadRequestException("Username already exists")
             hashed_password = (
                 bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
             ).decode("utf-8")
-            user: User = await self.user_repo.create_user(
-                transaction=transaction, username=username, password=hashed_password
+            user: User = await transaction.user_repo.create_user(
+                username=username, password=hashed_password
             )
             await transaction.commit()
 
@@ -36,8 +34,8 @@ class UserService:
 
     async def login(self, username: str, password: str) -> LoginUser:
         async with self.transaction_manager.get_transaction() as transaction:
-            user_detail = await self.user_repo.find_by_username(
-                transaction, username=username
+            user_detail = await transaction.user_repo.find_by_username(
+                username=username
             )
             if not user_detail or not bcrypt.checkpw(
                 password.encode("utf-8"), user_detail.password.encode("utf-8")
@@ -55,5 +53,5 @@ class UserService:
 
     async def get_users(self) -> List[User]:
         async with self.transaction_manager.get_transaction() as transaction:
-            users = await self.user_repo.get_all_users(transaction)
+            users = await transaction.user_repo.get_all_users()
             return users

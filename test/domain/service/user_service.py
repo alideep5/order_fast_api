@@ -24,7 +24,6 @@ class TestUserService(unittest.IsolatedAsyncioTestCase):
         self.service = UserService(
             transaction_manager=self.transaction_manager,
             jwt_util=self.jwt_util,
-            user_repo=self.user_repo,
         )
 
     async def test_create_account_success(self) -> None:

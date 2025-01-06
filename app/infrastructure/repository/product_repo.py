@@ -1,25 +1,23 @@
-from typing import Any, List, Optional
+from typing import List, Optional
 from sqlalchemy import delete, select
 from app.domain.entity.product import Product
 from app.domain.repository.product_repo import IProductRepo
-from app.domain.unit_of_work.transaction import ITransaction
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.infrastructure.table.product_table import ProductTable
 from app.infrastructure.table.shop_table import ShopTable
 
 
 class ProductRepo(IProductRepo):
-    async def get_product_shop_owner_id(
-        self, transaction: ITransaction[Any], product_id: str
-    ) -> Optional[str]:
-        session: AsyncSession = transaction.get_session()
+    def __init__(self, session: AsyncSession):
+        self._session = session
 
+    async def get_product_shop_owner_id(self, product_id: str) -> Optional[str]:
         stmt = (
             select(ShopTable.owner_id)
             .join(ProductTable, ShopTable.id == ProductTable.shop_id)
             .where(ProductTable.id == product_id)
         )
-        result = await session.execute(stmt)
+        result = await self._session.execute(stmt)
 
         shop_owner_id = result.scalar_one_or_none()
 
@@ -27,19 +25,16 @@ class ProductRepo(IProductRepo):
 
     async def get_products(
         self,
-        transaction: ITransaction[Any],
         shop_id: str,
         search: Optional[str],
         page: int,
         size: int,
     ) -> List[Product]:
-        session: AsyncSession = transaction.get_session()
-
         stmt = select(ProductTable).where(ProductTable.shop_id == shop_id)
         if search:
             stmt = stmt.where(ProductTable.name.ilike(f"%{search}%"))
         stmt = stmt.limit(size).offset((page - 1) * size)
-        result = await session.execute(stmt)
+        result = await self._session.execute(stmt)
 
         products = result.scalars().all()
         return [
@@ -52,13 +47,9 @@ class ProductRepo(IProductRepo):
             for product in products
         ]
 
-    async def get_product(
-        self, transaction: ITransaction[Any], product_id: str
-    ) -> Optional[Product]:
-        session: AsyncSession = transaction.get_session()
-
+    async def get_product(self, product_id: str) -> Optional[Product]:
         stmt = select(ProductTable).where(ProductTable.id == product_id)
-        result = await session.execute(stmt)
+        result = await self._session.execute(stmt)
 
         product = result.scalar_one_or_none()
 
@@ -72,17 +63,13 @@ class ProductRepo(IProductRepo):
             price=product.price,
         )
 
-    async def create_product(
-        self, transaction: ITransaction[Any], shop_id: str, name: str, price: float
-    ) -> Product:
-        session: AsyncSession = transaction.get_session()
-
+    async def create_product(self, shop_id: str, name: str, price: float) -> Product:
         product = ProductTable(shop_id=shop_id, name=name, price=price)
 
-        session.add(product)
+        self._session.add(product)
 
-        await session.flush()
-        await session.refresh(product)
+        await self._session.flush()
+        await self._session.refresh(product)
 
         return Product(
             id=product.id,
@@ -93,15 +80,12 @@ class ProductRepo(IProductRepo):
 
     async def update_product(
         self,
-        transaction: ITransaction[Any],
         product_id: str,
         name: Optional[str],
         price: Optional[float],
     ) -> Product:
-        session: AsyncSession = transaction.get_session()
-
         stmt = select(ProductTable).where(ProductTable.id == product_id)
-        result = await session.execute(stmt)
+        result = await self._session.execute(stmt)
 
         product = result.scalar_one()
 
@@ -110,8 +94,8 @@ class ProductRepo(IProductRepo):
         if price is not None:
             product.price = price
 
-        await session.flush()
-        await session.refresh(product)
+        await self._session.flush()
+        await self._session.refresh(product)
 
         return Product(
             id=product.id,
@@ -120,23 +104,15 @@ class ProductRepo(IProductRepo):
             price=product.price,
         )
 
-    async def delete_product(
-        self, transaction: ITransaction[Any], product_id: str
-    ) -> None:
-        session: AsyncSession = transaction.get_session()
-
+    async def delete_product(self, product_id: str) -> None:
         stmt = delete(ProductTable).where(ProductTable.id == product_id)
-        await session.execute(stmt)
+        await self._session.execute(stmt)
 
-        await session.flush()
+        await self._session.flush()
 
-    async def get_products_by_ids(
-        self, transaction: ITransaction[Any], product_ids: List[str]
-    ) -> List[Product]:
-        session: AsyncSession = transaction.get_session()
-
+    async def get_products_by_ids(self, product_ids: List[str]) -> List[Product]:
         stmt = select(ProductTable).where(ProductTable.id.in_(product_ids))
-        result = await session.execute(stmt)
+        result = await self._session.execute(stmt)
 
         products = result.scalars().all()
 

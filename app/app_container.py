@@ -11,9 +11,6 @@ from app.domain.service.product_service import ProductService
 from app.domain.service.shop_service import ShopService
 from app.domain.service.user_service import UserService
 from app.common.util.jwt_util import JWTUtil
-from app.infrastructure.repository.product_repo import ProductRepo
-from app.infrastructure.repository.shop_repo import ShopRepo
-from app.infrastructure.repository.user_repo import UserRepo
 from app.infrastructure.unit_of_work.transaction_manager import TransactionManager
 
 
@@ -32,27 +29,14 @@ class AppContainer(containers.DeclarativeContainer):
         TransactionManager, app_config=app_config, log=app_logger
     )
 
-    user_repo = providers.Singleton(UserRepo)
-    shop_repo = providers.Singleton(ShopRepo)
-    product_repo = providers.Singleton(ProductRepo)
-
     user_service = providers.Singleton(
-        UserService,
-        transaction_manager=transaction_manager,
-        jwt_util=jwt_util,
-        user_repo=user_repo,
+        UserService, transaction_manager=transaction_manager, jwt_util=jwt_util
     )
     shop_service = providers.Singleton(
-        ShopService,
-        transaction_manager=transaction_manager,
-        shop_repo=shop_repo,
-        user_repo=user_repo,
+        ShopService, transaction_manager=transaction_manager
     )
     product_service = providers.Singleton(
-        ProductService,
-        transaction_manager=transaction_manager,
-        product_repo=product_repo,
-        shop_repo=shop_repo,
+        ProductService, transaction_manager=transaction_manager
     )
 
     user_controller = providers.Singleton(UserController, user_service=user_service)
