@@ -19,8 +19,8 @@ class ProductService:
         size: int,
         search: Optional[str],
     ) -> List[Product]:
-        async with self.transaction_manager.get_transaction() as transaction:
-            return await transaction.product_repo.get_products(
+        async with self.transaction_manager.get_uow() as uow:
+            return await uow.product_repo.get_products(
                 shop_id=shop_id,
                 search=search,
                 page=page,
@@ -28,8 +28,8 @@ class ProductService:
             )
 
     async def get_product(self, product_id: str) -> Product:
-        async with self.transaction_manager.get_transaction() as transaction:
-            product = await transaction.product_repo.get_product(
+        async with self.transaction_manager.get_uow() as uow:
+            product = await uow.product_repo.get_product(
                 product_id=product_id,
             )
 
@@ -41,8 +41,8 @@ class ProductService:
     async def create_product(
         self, user: UserInfo, shop_id: str, name: str, price: float
     ) -> Product:
-        async with self.transaction_manager.get_transaction() as transaction:
-            shop = await transaction.shop_repo.get_shop(shop_id=shop_id)
+        async with self.transaction_manager.get_uow() as uow:
+            shop = await uow.shop_repo.get_shop(shop_id=shop_id)
 
             if not shop:
                 raise BadRequestException("Shop not found")
@@ -52,12 +52,12 @@ class ProductService:
                     "You are not allowed to add product to this shop"
                 )
 
-            product = await transaction.product_repo.create_product(
+            product = await uow.product_repo.create_product(
                 shop_id=shop_id,
                 name=name,
                 price=price,
             )
-            await transaction.commit()
+            await uow.commit()
 
             return product
 
@@ -68,11 +68,9 @@ class ProductService:
         name: Optional[str],
         price: Optional[float],
     ) -> Product:
-        async with self.transaction_manager.get_transaction() as transaction:
-            product_shop_owner_id = (
-                await transaction.product_repo.get_product_shop_owner_id(
-                    product_id=product_id,
-                )
+        async with self.transaction_manager.get_uow() as uow:
+            product_shop_owner_id = await uow.product_repo.get_product_shop_owner_id(
+                product_id=product_id,
             )
 
             if not product_shop_owner_id:
@@ -81,36 +79,34 @@ class ProductService:
             if product_shop_owner_id != user.id:
                 raise ForbiddenException("You are not allowed to update this product")
 
-            product = await transaction.product_repo.update_product(
+            product = await uow.product_repo.update_product(
                 product_id=product_id,
                 name=name,
                 price=price,
             )
-            await transaction.commit()
+            await uow.commit()
 
             return product
 
     async def delete_product(self, user: UserInfo, product_id: str) -> Product:
-        async with self.transaction_manager.get_transaction() as transaction:
-            product = await transaction.product_repo.get_product(
+        async with self.transaction_manager.get_uow() as uow:
+            product = await uow.product_repo.get_product(
                 product_id=product_id,
             )
 
             if not product:
                 raise BadRequestException("Product not found")
 
-            product_shop_owner_id = (
-                await transaction.product_repo.get_product_shop_owner_id(
-                    product_id=product_id,
-                )
+            product_shop_owner_id = await uow.product_repo.get_product_shop_owner_id(
+                product_id=product_id,
             )
 
             if product_shop_owner_id != user.id:
                 raise ForbiddenException("You are not allowed to delete this product")
 
-            await transaction.product_repo.delete_product(
+            await uow.product_repo.delete_product(
                 product_id=product_id,
             )
-            await transaction.commit()
+            await uow.commit()
 
             return product

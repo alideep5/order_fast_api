@@ -4,7 +4,7 @@ from app.domain.repository.shop_repo import IShopRepo
 from app.domain.repository.user_repo import IUserRepo
 
 
-class ITransaction(Protocol):
+class IUnitOfWork(Protocol):
     async def commit(self) -> None:
         pass
 

@@ -13,22 +13,20 @@ class ShopService:
         self.transaction_manager = transaction_manager
 
     async def createShop(self, user_info: UserInfo, name: str, address: str) -> Shop:
-        async with self.transaction_manager.get_transaction() as transaction:
-            shop: Shop = await transaction.shop_repo.create_shop(
-                user_info.id, name, address
-            )
-            await transaction.commit()
+        async with self.transaction_manager.get_uow() as uow:
+            shop: Shop = await uow.shop_repo.create_shop(user_info.id, name, address)
+            await uow.commit()
 
         return shop
 
     async def get_shops(self) -> List[Shop]:
-        async with self.transaction_manager.get_transaction() as transaction:
-            shops = await transaction.shop_repo.get_all_shops()
+        async with self.transaction_manager.get_uow() as uow:
+            shops = await uow.shop_repo.get_all_shops()
         return shops
 
     async def get_shop(self, shop_id: str) -> Shop:
-        async with self.transaction_manager.get_transaction() as transaction:
-            shop = await transaction.shop_repo.get_shop(shop_id)
+        async with self.transaction_manager.get_uow() as uow:
+            shop = await uow.shop_repo.get_shop(shop_id)
             if shop is None:
                 raise BadRequestException("Shop not found")
         return shop
@@ -40,40 +38,40 @@ class ShopService:
         name: Optional[str],
         address: Optional[str],
     ) -> Shop:
-        async with self.transaction_manager.get_transaction() as transaction:
-            shop = await transaction.shop_repo.get_shop(shop_id)
+        async with self.transaction_manager.get_uow() as uow:
+            shop = await uow.shop_repo.get_shop(shop_id)
             if shop is None:
                 raise BadRequestException("Shop not found")
 
             if shop.owner_id != user_info.id:
                 raise ForbiddenException("You are not allowed to update this shop")
 
-            updated_shop = await transaction.shop_repo.update_shop(
+            updated_shop = await uow.shop_repo.update_shop(
                 shop_id,
                 name,
                 address,
             )
-            await transaction.commit()
+            await uow.commit()
         return updated_shop
 
     async def delete_shop(self, user_info: UserInfo, shop_id: str) -> Shop:
-        async with self.transaction_manager.get_transaction() as transaction:
-            shop = await transaction.shop_repo.get_shop(shop_id)
+        async with self.transaction_manager.get_uow() as uow:
+            shop = await uow.shop_repo.get_shop(shop_id)
             if shop is None:
                 raise BadRequestException("Shop not found")
 
             if shop.owner_id != user_info.id:
                 raise ForbiddenException("You are not allowed to delete this shop")
 
-            await transaction.shop_repo.delete_shop(shop_id)
-            await transaction.commit()
+            await uow.shop_repo.delete_shop(shop_id)
+            await uow.commit()
         return shop
 
     async def change_owner(
         self, user_info: UserInfo, shop_id: str, new_owner_id: str
     ) -> Shop:
-        async with self.transaction_manager.get_transaction() as transaction:
-            shop = await transaction.shop_repo.get_shop(shop_id)
+        async with self.transaction_manager.get_uow() as uow:
+            shop = await uow.shop_repo.get_shop(shop_id)
             if shop is None:
                 raise BadRequestException("Shop not found")
 
@@ -82,12 +80,12 @@ class ShopService:
                     "You are not allowed to change owner of this shop"
                 )
 
-            new_owner = await transaction.user_repo.find_by_id(new_owner_id)
+            new_owner = await uow.user_repo.find_by_id(new_owner_id)
             if new_owner is None:
                 raise BadRequestException("New owner not found")
 
-            await transaction.shop_repo.change_owner(shop_id, new_owner_id)
-            await transaction.commit()
+            await uow.shop_repo.change_owner(shop_id, new_owner_id)
+            await uow.commit()
 
         return Shop(
             id=shop.id, name=shop.name, address=shop.address, owner_id=new_owner_id

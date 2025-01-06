@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from app.common.model.app_config import AppConfig
 from app.common.app_logger import AppLogger
 from app.domain.unit_of_work.transaction_manager import ITransactionManager
-from app.infrastructure.unit_of_work.transaction import Transaction
+from app.infrastructure.unit_of_work.unit_of_work import UnitOfWork
 
 
 class TransactionManager(ITransactionManager):
@@ -25,10 +25,10 @@ class TransactionManager(ITransactionManager):
         )
 
     @asynccontextmanager
-    async def get_transaction(self) -> AsyncIterator[Transaction]:
+    async def get_uow(self) -> AsyncIterator[UnitOfWork]:
         async with self.AsyncSessionLocal() as session:
             try:
-                yield Transaction(session)
+                yield UnitOfWork(session)
             except Exception as e:
                 await session.rollback()
                 self.log.error(
