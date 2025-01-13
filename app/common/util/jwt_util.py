@@ -9,23 +9,24 @@ from app.common.app_logger import AppLogger
 
 class JWTUtil:
     def __init__(self, app_config: AppConfig, log: AppLogger) -> None:
-        self.jwt_secret = app_config.jwt_secret_key
-        self.jwt_expiration_time = app_config.jwt_expiration_time
+        self.app_config = app_config
         self.log = log
 
     def generate_token(self, user: UserInfo) -> str:
         now = datetime.now(timezone.utc)
-        expiration_date = now + timedelta(seconds=self.jwt_expiration_time)
+        expiration_date = now + timedelta(seconds=self.app_config.jwt_expiration_time)
         payload = {
             "sub": user.model_dump_json(),
             "iat": int(now.timestamp()),
             "exp": int(expiration_date.timestamp()),
         }
-        return jwt.encode(payload, self.jwt_secret, algorithm="HS256")
+        return jwt.encode(payload, self.app_config.jwt_secret, algorithm="HS256")
 
     def get_user(self, token: str) -> Optional[UserInfo]:
         try:
-            decoded = jwt.decode(token, self.jwt_secret, algorithms=["HS256"])
+            decoded = jwt.decode(
+                token, self.app_config.jwt_secret, algorithms=["HS256"]
+            )
             user_data = json.loads(decoded.get("sub"))
             return UserInfo(**user_data)
         except Exception as ex:
@@ -37,7 +38,7 @@ class JWTUtil:
         try:
             jwt.decode(
                 token,
-                self.jwt_secret,
+                self.app_config.jwt_secret,
                 algorithms=["HS256"],
                 options={"verify_exp": True},
             )
