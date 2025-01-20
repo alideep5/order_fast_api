@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from app.api.v1.controller.file_controller import FileController
 from app.api.v1.controller.product_controller import ProductController
 from app.api.v1.controller.user_controller import UserController
 from app.api.v1.controller.shop_controller import ShopController
@@ -11,6 +12,7 @@ class V1Router(APIRouter):
         user_controller: UserController,
         shop_controller: ShopController,
         product_controller: ProductController,
+        file_controller: FileController,
         prefix: str = "/v1",
     ):
         super().__init__(prefix=prefix)
@@ -69,3 +71,4 @@ class V1Router(APIRouter):
         self.include_router(user_controller)
         self.include_router(shop_controller)
         self.include_router(product_controller)
+        self.include_router(file_controller)
