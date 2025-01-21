@@ -1,9 +1,12 @@
 import base64
+import json
+from typing import cast
 from fastapi import APIRouter
 from datetime import datetime, timedelta, timezone
-import jwt
 from app.api.dto.video_url import VideoURL
 from app.common.model.app_config import AppConfig
+from jwt import algorithms, encode
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey
 
 
 class FileController(APIRouter):
@@ -22,21 +25,26 @@ class FileController(APIRouter):
 
     async def _get_demo_video_url(self) -> VideoURL:
         demo_video_id = "a7054106fa1206c7c10e493bf47f3160"
-
-        CLOUDFLARE_SIGNING_KEY = base64.b64decode(
-            self.app_config.cloudflare_pem.encode()
-        ).decode()
-
         expiration_time = datetime.now(timezone.utc) + timedelta(minutes=120)
         exp_timestamp = int(expiration_time.timestamp())
 
+        jwk_json = base64.b64decode(self.app_config.cloudflare_jwk).decode("utf-8")
+
+        signing_key = cast(RSAPrivateKey, algorithms.RSAAlgorithm.from_jwk(jwk_json))
+
+        jwk_dict = json.loads(jwk_json)
+
+        kid = jwk_dict.get("kid")
+
+        headers = {"kid": kid, "alg": "RS256"}
         payload = {
             "sub": demo_video_id,
+            "kid": kid,
             "exp": exp_timestamp,
         }
 
-        signed_token = jwt.encode(payload, CLOUDFLARE_SIGNING_KEY, algorithm="RS256")
+        signed_token = encode(payload, signing_key, algorithm="RS256", headers=headers)
 
-        video_url = f"https://customer-{self.app_config.customer_id}.cloudflarestream.com/{demo_video_id}/manifest/video.m3u8?token={signed_token}"
+        video_url = f"https://customer-{self.app_config.customer_id}.cloudflarestream.com/{signed_token}/manifest/video.m3u8"
 
         return VideoURL(video_url=video_url, expires_at=expiration_time)

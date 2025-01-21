@@ -50,5 +50,3 @@
         }
         
         ```
-        
-    - **Important**: The `pem` value is your private key in PEM format. Store this securely, as it will not be displayed again.
